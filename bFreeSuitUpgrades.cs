@@ -1,6 +1,6 @@
 ﻿//=============================================================================
 
-public class bFreeSuitUpgrades : cmk.NMS.Script.ModClass
+public class FreeSuitUpgrades : cmk.NMS.Script.ModClass
 {
   protected override void Execute()
   {
@@ -101,7 +101,7 @@ public class bFreeSuitUpgrades : cmk.NMS.Script.ModClass
   }
 
   // This could probably go into Util, it's potentially handy	
-    protected List<T> CloneList<T>(List<T> source) where T : class
+    protected static List<T> CloneList<T>(List<T> source) where T : class
   {
     return new List<T>(source);
   }
