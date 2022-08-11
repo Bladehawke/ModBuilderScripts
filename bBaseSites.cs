@@ -1,4 +1,4 @@
-﻿//=============================================================================
+//=============================================================================
 
 //=============================================================================
 
@@ -8,7 +8,7 @@
 // i.e. what kind of location you find.
 // In particular it adds Base Sites and Portals as possible reward locations.
 // (base sites are flat round areas w/ existing base computer)
-public class bBaseSites : cmk.NMS.Script.ModClass
+public class BetterBaseSites : cmk.NMS.Script.ModClass
 {
   protected override void Execute()
   {
@@ -67,29 +67,34 @@ public class bBaseSites : cmk.NMS.Script.ModClass
   // New: Depot 20%, Factory 40%, Harvester 20%, Base 10%
   protected void RewardA(List<GcRewardTableItem> LIST)
   {
-    var reward = UpdateReward(LIST, "Depot", SecureDepot);
-    reward = UpdateReward(LIST, "Factory", SecureFactory);
-    reward = UpdateReward(LIST, "Harvester", SecureHarvester);
-    reward = CreateReward(LIST, SecureBaseSite,
-    "Harvester", "HARVESTER",  // clone this
-    "Base", "BASE",       // to make this
+        UpdateReward(LIST, "Depot", SecureDepot);
+        UpdateReward(LIST, "Factory", SecureFactory);
+        UpdateReward(LIST, "Harvester", SecureHarvester);
+        CreateReward(
+            LIST,
+            SecureBaseSite,
+            "Harvester",
+            "HARVESTER", // clone this
+            "Base",
+            "BASE", // to make this
     BuildingClassEnum.Base
   );
   }
 
   //...........................................................
 
-  protected GcRewardTableItem UpdateReward(
+    protected static void UpdateReward(
     List<GcRewardTableItem> LIST, string ID, float PERCENT
   )
   {
     var reward = LIST.Find(ITEM => ITEM.LabelID == ID);
     if (reward != null)
     {  // no error, not all R_STARCHART_* in RANDOM_SCAN_*
-      if (PERCENT < 1) LIST.Remove(reward);
-      else reward.PercentageChance = PERCENT;
+            if (PERCENT < 1)
+                LIST.Remove(reward);
+            else
+                reward.PercentageChance = PERCENT;
     }
-    return reward;
   }
 
   //...........................................................
