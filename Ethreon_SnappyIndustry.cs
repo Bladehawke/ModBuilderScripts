@@ -1,6 +1,6 @@
 ﻿//=============================================================================
 
-public class SnappyIndustry : cmk.NMS.Script.ModClass
+public class EthreonSnappyIndustry : cmk.NMS.Script.ModClass
 {
     protected override void Execute()
     {
@@ -30,7 +30,7 @@ public class SnappyIndustry : cmk.NMS.Script.ModClass
         }
     }
 
-    protected TkSceneNodeData BuildModSnapFloorCount(int NUM)
+    protected static TkSceneNodeData BuildModSnapFloorCount(int NUM)
     {
         List<TkSceneNodeData> children = new();
 
@@ -75,7 +75,7 @@ public class SnappyIndustry : cmk.NMS.Script.ModClass
         return data;
     }
 
-    protected TkSceneNodeData BuildModSnapDir(string DIR)
+    protected static TkSceneNodeData BuildModSnapDir(string DIR)
     {
         List<TkSceneNodeData> children = new();
 
@@ -151,27 +151,29 @@ public class SnappyIndustry : cmk.NMS.Script.ModClass
         mbin.Children.Add(data);
     }
 
-    protected TkSceneNodeData BuildChild(string NAME, TkTransformData TFD = null)
+    protected static TkSceneNodeData BuildChild(string NAME, TkTransformData TFD = null)
     {
         if (TFD == null)
         {
             TFD = new();
         }
-        TkSceneNodeData child = new();
-        child.Name = NAME;
-        child.NameHash = jenkins.Hash(NAME);
-        child.Type = "LOCATOR";
-        child.Transform = new()
+        var child = new TkSceneNodeData
         {
-            TransX = TFD.TransX,
-            TransY = TFD.TransY,
-            TransZ = TFD.TransZ,
-            RotX = TFD.RotX,
-            RotY = TFD.RotY,
-            RotZ = TFD.RotZ,
-            ScaleX = 1,
-            ScaleY = 1,
-            ScaleZ = 1
+            Name = NAME,
+            NameHash = jenkins.Hash(NAME),
+            Type = "LOCATOR",
+            Transform = new()
+            {
+                TransX = TFD.TransX,
+                TransY = TFD.TransY,
+                TransZ = TFD.TransZ,
+                RotX = TFD.RotX,
+                RotY = TFD.RotY,
+                RotZ = TFD.RotZ,
+                ScaleX = 1,
+                ScaleY = 1,
+                ScaleZ = 1
+            }
         };
 
         return child;
@@ -234,7 +236,7 @@ public class SnappyIndustry : cmk.NMS.Script.ModClass
         mbin.Children.Add(data);
     }
 
-    protected TkTransformData SetRotY(int i)
+    protected static TkTransformData SetRotY(int i)
     {
         TkTransformData tfd = new() { RotY = 90 * (i - 1) };
         if (tfd.RotY > 180)
@@ -323,9 +325,11 @@ public class SnappyIndustry : cmk.NMS.Script.ModClass
             }
 
             TkSceneNodeData LastOne = BuildChild("SnapPoint_IndLargeFloor_1");
-            LastOne.Children = new();
-            LastOne.Children.Add(BuildChild("IndustrialLargeFloor_In_1"));
-            LastOne.Children.Add(BuildChild("NullSnap_"));
+            LastOne.Children = new List<TkSceneNodeData>()
+            {
+                BuildChild("IndustrialLargeFloor_In_1"),
+                BuildChild("NullSnap_")
+            };
             mbin.Children.Add(LastOne);
         }
     }
